@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "802324438967",
+    "project_id": "bessenger-6ca0e",
+    "storage_bucket": "bessenger-6ca0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802324438967:android:5923b175cbc17a04f2d232",
+        "android_client_info": {
+          "package_name": "com.bessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802324438967-onc898fmd4r6g13i0pjuisj6269095h0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJzFMr9Yy9-AxYFjGgc6gNsf-ucF0lZCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802324438967-onc898fmd4r6g13i0pjuisj6269095h0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
