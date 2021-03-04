@@ -1,17 +1,26 @@
 import React, {useContext, useState} from 'react';
-import {SafeAreaView, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
+} from 'react-native';
 import {color, globalStyle} from '../../utility';
 import {Logo, InputField, RoundCornerButton} from '../../component';
 import {Store} from '../../context/store';
 import {AddUser, SignUpRequest} from '../../network';
 import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
 import {setAsyncStorage, keys} from '../../asyncStorage';
-import {setUniqueValue} from '../../utility/constants';
+import {setUniqueValue, keyboardVerticalOffset} from '../../utility/constants';
 import firebase from '../../firebase/config';
 
 const SignUp = ({navigation}) => {
   const globalState = useContext(Store);
   const {dispatchLoaderAction} = globalState;
+  const [showLogo, toggleLogo] = useState(true);
 
   const [credentials, setCredentials] = useState({
     name: '',
@@ -76,46 +85,78 @@ const SignUp = ({navigation}) => {
     }
   };
 
+  const handleFocus = () => {
+    setTimeout(() => {
+      toggleLogo(false);
+    }, 150);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      toggleLogo(true);
+    }, 150);
+  };
+
   return (
-    <SafeAreaView style={[globalStyle.flex1]}>
-      <View style={[globalStyle.containerCentered]}>
-        <Logo />
-      </View>
-      <View style={[globalStyle.flex2, globalStyle.sectionCentered]}>
-        <InputField
-          placeholder="Enter name"
-          value={name}
-          onChangeText={(text) => handleOnChange('name', text)}
-        />
-        <InputField
-          placeholder="Enter email"
-          value={email}
-          onChangeText={(text) => handleOnChange('email', text)}
-        />
-        <InputField
-          placeholder="Enter password"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={(text) => handleOnChange('password', text)}
-        />
-        <InputField
-          placeholder="Confirm password"
-          value={confirmPassword}
-          secureTextEntry={true}
-          onChangeText={(text) => handleOnChange('confirmPassword', text)}
-        />
-        <RoundCornerButton title="Sign Up" onPress={() => onSignUpPress()} />
-        <Text
-          style={{
-            fontSize: 25,
-            fontWeight: 'bold',
-            color: color.PRIMARY,
-          }}
-          onPress={() => navigation.navigate('Login')}>
-          Login
-        </Text>
-      </View>
-    </SafeAreaView>
+    <KeyboardAvoidingView
+      style={[globalStyle.flex1]}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={keyboardVerticalOffset}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={[globalStyle.flex1]}>
+          {showLogo && (
+            <View style={[globalStyle.containerCentered]}>
+              <Logo />
+            </View>
+          )}
+          <View style={[globalStyle.flex2, globalStyle.sectionCentered]}>
+            <InputField
+              placeholder="Enter name"
+              value={name}
+              onChangeText={(text) => handleOnChange('name', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}
+            />
+            <InputField
+              placeholder="Enter email"
+              value={email}
+              onChangeText={(text) => handleOnChange('email', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}
+            />
+            <InputField
+              placeholder="Enter password"
+              value={password}
+              secureTextEntry={true}
+              onChangeText={(text) => handleOnChange('password', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}
+            />
+            <InputField
+              placeholder="Confirm password"
+              value={confirmPassword}
+              secureTextEntry={true}
+              onChangeText={(text) => handleOnChange('confirmPassword', text)}
+              onFocus={() => handleFocus()}
+              onBlur={() => handleBlur()}
+            />
+            <RoundCornerButton
+              title="Sign Up"
+              onPress={() => onSignUpPress()}
+            />
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                color: color.PRIMARY,
+              }}
+              onPress={() => navigation.navigate('Login')}>
+              Login
+            </Text>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
