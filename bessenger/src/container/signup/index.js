@@ -5,8 +5,8 @@ import {Logo, InputField, RoundCornerButton} from '../../component';
 import {Store} from '../../context/store';
 import {AddUser, SignUpRequest} from '../../network';
 import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
-import {setAsyncStorage, keys} from '../../asyncStorage'
-import { setUniqueValue } from '../../utility/constants';
+import {setAsyncStorage, keys} from '../../asyncStorage';
+import {setUniqueValue} from '../../utility/constants';
 import firebase from '../../firebase/config';
 
 const SignUp = ({navigation}) => {
@@ -41,7 +41,14 @@ const SignUp = ({navigation}) => {
         type: LOADING_START,
       });
       SignUpRequest(email, password)
-        .then(() => {
+        .then((res) => {
+          if (!res.additionalUserInfo) {
+            alert(res);
+            dispatchLoaderAction({
+              type: LOADING_STOP,
+            });
+            return;
+          }
           let uid = firebase.auth().currentUser.uuid;
           let profileImg = '';
           AddUser(name, email, uid, profileImg)
