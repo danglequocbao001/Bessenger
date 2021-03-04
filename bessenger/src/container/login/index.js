@@ -36,7 +36,7 @@ const Login = ({navigation}) => {
       LoginRequest(email, password)
         .then((res) => {
           if (!res.additionalUserInfo) {
-            alert(res);
+            // alert(res);
             dispatchLoaderAction({
               type: LOADING_STOP,
             });
