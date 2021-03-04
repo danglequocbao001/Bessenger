@@ -11,5 +11,6 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginVertical: appStyle.fieldMarginVertical,
     fontSize: 16,
+    borderRadius: 16,
   },
 });
