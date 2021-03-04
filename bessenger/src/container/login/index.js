@@ -17,7 +17,13 @@ const Login = ({navigation}) => {
     });
   };
   const onLoginPress = () => {
+    if (!email) {
+      alert('Email is required!');
+    } else if (!password) {
+      alert('Password is required!');
+    } else {
       alert(JSON.stringify(credentials));
+    }
   };
 
   return (
