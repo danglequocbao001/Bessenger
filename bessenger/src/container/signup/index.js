@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {SafeAreaView, View, Text} from 'react-native';
 import {color, globalStyle} from '../../utility';
 import {Logo, InputField, RoundCornerButton} from '../../component';
+import {Store} from '../../context/store';
+import { SignUpRequest } from '../../network'
+import { LOADING_STOP } from '../../context/actions/type';
 
 const SignUp = ({navigation}) => {
+  const globalState = useContext(Store);
+  const {dispatchLoaderAction} = globalState;
+
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
@@ -28,7 +34,17 @@ const SignUp = ({navigation}) => {
     } else if (password != confirmPassword) {
       alert('Password did not match');
     } else {
-      alert(JSON.stringify(credentials));
+      dispatchLoaderAction({
+        type: LOADING_START,
+      });
+      SignUpRequest(email,password)
+        .then(() => {})
+        .catch((err) => {
+          dispatchLoaderAction({
+            type: LOADING_STOP,
+          });
+          alert(err);
+        });
     }
   };
 
