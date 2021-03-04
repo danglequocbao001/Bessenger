@@ -1,7 +1,9 @@
 import React, {useLayoutEffect} from 'react';
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, ToastAndroid} from 'react-native';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {color} from '../../utility';
+import {LogOutUser} from '../../network';
+import {clearAsyncStorage} from '../../asyncStorage';
 
 const Dashboard = ({navigation}) => {
   useLayoutEffect(() => {
@@ -19,7 +21,9 @@ const Dashboard = ({navigation}) => {
               [
                 {
                   text: 'Yes',
-                  onPress: () => alert('Logged out'),
+                  onPress: () => {
+                    logout();
+                  },
                 },
                 {
                   text: 'No',
@@ -34,6 +38,24 @@ const Dashboard = ({navigation}) => {
       ),
     });
   }, [navigation]);
+
+  const logout = () => {
+    LogOutUser()
+      .then(() => {
+        clearAsyncStorage()
+          .then(() => {
+            navigation.replace('Login');
+          })
+          .catch((err) => alert(err));
+      })
+      .catch((err) => alert(err));
+    ToastAndroid.showWithGravity(
+      'Logged out',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
+
   return (
     <View>
       <Text>Dashboard</Text>

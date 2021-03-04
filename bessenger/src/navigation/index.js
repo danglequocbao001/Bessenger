@@ -12,7 +12,7 @@ function NavContainer() {
             <Stack.Navigator initialRouteName="Splash"
             screenOptions={{
                 headerShown: true,
-                headerStyle: {backgroundColor: color.GREY},
+                headerStyle: {backgroundColor: color.SECONDARY},
                 headerTintColor: color.WHITE,
                 headerTitleAlign: 'center',
                 headerTitleStyle: {
