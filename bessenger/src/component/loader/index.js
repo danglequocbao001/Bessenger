@@ -35,10 +35,9 @@ const styles = StyleSheet.create({
 });
 
 const Loader = () => {
-  // const globalState = useContext(Store);
-  // const { mapLoaderState } = globalState;
-  // const { loading } = mapLoaderState;
-  let loading = false;
+  const globalState = useContext(Store);
+  const { mapLoaderState } = globalState;
+  const { loading } = mapLoaderState;
 
   return loading ? (
     <View style={styles.loaderContainer}>
