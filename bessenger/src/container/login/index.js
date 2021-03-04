@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { Text, SafeAreaView } from 'react-native'
 
 const Login = ({navigation}) => {
     return (
-        <View>
+        <SafeAreaView>
             <Text onPress={()=>navigation.navigate('SignUp')} >Login</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 
