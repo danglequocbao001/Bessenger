@@ -1,11 +1,71 @@
-import React, {useLayoutEffect} from 'react';
-import {View, Text, Alert, ToastAndroid} from 'react-native';
+import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
+import {Alert, ToastAndroid, SafeAreaView, FlatList} from 'react-native';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import {color} from '../../utility';
+import {color, globalStyle} from '../../utility';
 import {LogOutUser} from '../../network';
 import {clearAsyncStorage} from '../../asyncStorage';
+import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
+import firebase from '../../firebase/config';
+import {uuid} from '../../utility/constants';
+import {Profile, ShowUsers} from '../../component';
+import {Store} from '../../context/store';
 
 const Dashboard = ({navigation}) => {
+  const globalState = useContext(Store);
+  const {dispatchLoaderAction} = globalState;
+
+  const [userDetail, setUserDetail] = useState({
+    id: '',
+    name: '',
+    profileImg: '',
+  });
+
+  const {name, profileImg} = userDetail;
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    dispatchLoaderAction({
+      type: LOADING_START,
+    });
+    try {
+      firebase
+        .database()
+        .ref('users')
+        .on('value', (dataSnapShot) => {
+          let users = [];
+          let currentUser = {
+            id: '',
+            name: '',
+            profileImg: '',
+          };
+          dataSnapShot.forEach((child) => {
+            if (uuid === child.val().uuid) {
+              currentUser.id = uuid;
+              currentUser.name = child.val().name;
+              currentUser.profileImg = child.val().profileImg;
+            } else {
+              users.push({
+                id: child.val().id,
+                name: child.val().name,
+                profileImg: child.val().profileImg,
+              });
+            }
+          });
+
+          setUserDetail(currentUser);
+          setAllUsers(users);
+          dispatchLoaderAction({
+            type: LOADING_STOP,
+          });
+        });
+    } catch (err) {
+      dispatchLoaderAction({
+        type: LOADING_STOP,
+      });
+      alert(err);
+    }
+  }, []);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -30,7 +90,7 @@ const Dashboard = ({navigation}) => {
                 },
               ],
               {
-                cancelable: false,
+                cancelable: true,
               },
             )
           }
@@ -57,9 +117,17 @@ const Dashboard = ({navigation}) => {
   };
 
   return (
-    <View>
-      <Text>Dashboard</Text>
-    </View>
+    <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.BLACK}]}>
+      <FlatList
+        alwaysBounceVertical={false}
+        data={allUsers}
+        keyExtractor={(_, index) => index.toString()}
+        ListHeaderComponent={<Profile img={profileImg} name={name} />}
+        renderItem={({item}) => (
+          <ShowUsers name={item.name} img={item.profileImg} />
+        )}
+      />
+    </SafeAreaView>
   );
 };
 
