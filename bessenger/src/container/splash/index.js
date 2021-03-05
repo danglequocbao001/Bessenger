@@ -26,7 +26,7 @@ const Splash = ({navigation}) => {
           navigation.replace('Login');
         })
         .catch((err) => {
-          alert(err);
+          // alert(err);
           navigation.replace('Login');
         });
     }, 2500);

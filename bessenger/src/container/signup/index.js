@@ -52,7 +52,7 @@ const SignUp = ({navigation}) => {
       SignUpRequest(email, password)
         .then((res) => {
           if (!res.additionalUserInfo) {
-            alert(res);
+            // alert(res);
             dispatchLoaderAction({
               type: LOADING_STOP,
             });
@@ -73,14 +73,14 @@ const SignUp = ({navigation}) => {
               dispatchLoaderAction({
                 type: LOADING_STOP,
               });
-              alert(err);
+              // alert(err);
             });
         })
         .catch((err) => {
           dispatchLoaderAction({
             type: LOADING_STOP,
           });
-          alert(err);
+          // alert(err);
         });
     }
   };

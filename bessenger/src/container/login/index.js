@@ -56,7 +56,7 @@ const Login = ({navigation}) => {
           dispatchLoaderAction({
             type: LOADING_STOP,
           });
-          alert(err);
+          // alert(err);
         });
     }
   };

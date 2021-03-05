@@ -117,7 +117,7 @@ const Dashboard = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.BLACK}]}>
+    <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.WHITE}]}>
       <FlatList
         alwaysBounceVertical={false}
         data={allUsers}

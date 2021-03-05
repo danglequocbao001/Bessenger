@@ -16,7 +16,7 @@ export default ({ img, name, onImgTap, onEditImgTap }) => (
             style={[
               globalStyle.sectionCentered,
               styles.img,
-              { backgroundColor: color.DARK_GRAY },
+              { backgroundColor: color.PRIMARY },
             ]}
           >
             <Text style={styles.name}>{name.charAt(0)}</Text>
