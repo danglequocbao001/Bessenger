@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, View, Text } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import SimpleLineIcon from "react-native-vector-icons/SimpleLineIcons";
 import styles from "./styles";
 import { globalStyle, color } from "../../utility";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -24,8 +24,8 @@ export default ({ img, name, onImgTap, onEditImgTap }) => (
         )}
       </TouchableOpacity>
       <View style={[globalStyle.sectionCentered, styles.editImgContainer]}>
-        <FontAwesome5
-          name="user-edit"
+        <SimpleLineIcon
+          name="pencil"
           size={20}
           onPress={onEditImgTap}
           color={color.WHITE}
