@@ -18,6 +18,7 @@ const Dashboard = ({navigation}) => {
     id: '',
     name: '',
     profileImg: '',
+    email: '',
   });
 
   const {name, profileImg} = userDetail;
@@ -37,21 +38,24 @@ const Dashboard = ({navigation}) => {
             id: '',
             name: '',
             profileImg: '',
+            email: ''
           };
           dataSnapShot.forEach((child) => {
             if (uuid === child.val().uuid) {
               currentUser.id = uuid;
               currentUser.name = child.val().name;
               currentUser.profileImg = child.val().profileImg;
+              currentUser.email = child.val().email;
             } else {
               users.push({
                 id: child.val().id,
                 name: child.val().name,
                 profileImg: child.val().profileImg,
+                email: child.val().email
               });
             }
           });
-
+          console.log(users)
           setUserDetail(currentUser);
           setAllUsers(users);
           dispatchLoaderAction({
@@ -124,7 +128,7 @@ const Dashboard = ({navigation}) => {
         keyExtractor={(_, index) => index.toString()}
         ListHeaderComponent={<Profile img={profileImg} name={name} />}
         renderItem={({item}) => (
-          <ShowUsers name={item.name} img={item.profileImg} />
+          <ShowUsers name={item.name} img={item.profileImg} email={item.email}/>
         )}
       />
     </SafeAreaView>

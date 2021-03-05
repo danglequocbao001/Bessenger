@@ -25,4 +25,5 @@ export default StyleSheet.create({
   },
   thumbnailName: { fontSize: 30, color: color.WHITE, fontWeight: "bold" },
   profileName: { fontSize: 20, color: color.DARK_GRAY, fontWeight: "bold" },
+  profileEmail: { fontSize: 12, color: color.DARK_GRAY }
 });
