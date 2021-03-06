@@ -82,7 +82,9 @@ const Dashboard = ({navigation}) => {
       });
       alert(err);
     }
-    return () => (isSubscribed = false)
+    return function cleanup() {
+      firebase.database().goOffline();
+    };
   }, []);
 
   useLayoutEffect(() => {
