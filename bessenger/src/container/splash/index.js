@@ -22,8 +22,9 @@ const Splash = ({navigation}) => {
           if (uuid) {
             setUniqueValue(uuid);
             navigation.replace('Dashboard');
+          } else {
+            navigation.replace('Login');
           }
-          navigation.replace('Login');
         })
         .catch((err) => {
           // alert(err);

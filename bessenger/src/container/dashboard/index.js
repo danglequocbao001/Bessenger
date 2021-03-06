@@ -25,14 +25,17 @@ const Dashboard = ({navigation}) => {
   const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
-    dispatchLoaderAction({
-      type: LOADING_START,
-    });
+    // dispatchLoaderAction({
+    //   type: LOADING_START,
+    // });
     try {
       firebase
         .database()
         .ref('users')
         .on('value', (dataSnapShot) => {
+          dispatchLoaderAction({
+            type: LOADING_START,
+          });
           let users = [];
           let currentUser = {
             id: '',
