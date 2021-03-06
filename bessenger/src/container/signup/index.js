@@ -60,7 +60,8 @@ const SignUp = ({navigation}) => {
           }
           let uid = firebase.auth().currentUser.uid;
           let profileImg = '';
-          AddUser(name, email, uid, profileImg)
+          let username = name.replace(/\s/g, "").toLowerCase();
+          AddUser(username, name, email, uid, profileImg)
             .then(() => {
               setAsyncStorage(keys.uid, uid);
               setUniqueValue(uid);
