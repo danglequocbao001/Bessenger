@@ -81,6 +81,9 @@ const Dashboard = ({navigation}) => {
       });
       alert(err);
     }
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
 
   useLayoutEffect(() => {
