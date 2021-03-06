@@ -1,15 +1,9 @@
 import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
-import {
-  Alert,
-  ToastAndroid,
-  SafeAreaView,
-  FlatList,
-  ImagePickerIOS,
-} from 'react-native';
+import {Alert, ToastAndroid, SafeAreaView, FlatList} from 'react-native';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {color, globalStyle} from '../../utility';
-import {LogOutUser} from '../../network';
+import {LogOutUser, UpdateUser} from '../../network';
 import {clearAsyncStorage} from '../../asyncStorage';
 import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
 import firebase from '../../firebase/config';
@@ -132,14 +126,18 @@ const Dashboard = ({navigation}) => {
           .catch((err) => alert(err));
       })
       .catch((err) => alert(err));
+    toastService('Logged out');
+  };
+
+  const toastService = (messeage) => {
     ToastAndroid.showWithGravity(
-      'Logged out',
+      messeage,
       ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
+      ToastAndroid.BOTTOM,
     );
   };
 
-  const selectPhotoTapped = () => {
+  const editAvatar = () => {
     const option = {
       storageOptions: {
         skipBackup: true,
@@ -153,13 +151,67 @@ const Dashboard = ({navigation}) => {
         {
           text: 'Library',
           onPress: () => {
-            launchImageLibrary(option, (response) => {});
+            launchImageLibrary(option, (response) => {
+              if (response.didCancel) {
+                toastService('Canceled');
+              } else if (response.errorCode) {
+                toastService('Error, try again!');
+              } else {
+                let source = response.uri;
+                dispatchLoaderAction({
+                  type: LOADING_START,
+                });
+                UpdateUser(uuid, source)
+                  .then(() => {
+                    setUserDetail({
+                      ...userDetail,
+                      profileImg: source,
+                    });
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                  })
+                  .catch(() => {
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                    toastService(err);
+                  });
+              }
+            });
           },
         },
         {
           text: 'Camera',
           onPress: () => {
-            launchCamera(option, (response) => {});
+            launchCamera(option, (response) => {
+              if (response.didCancel) {
+                toastService('Canceled');
+              } else if (response.errorCode) {
+                toastService('Error, try again!');
+              } else {
+                let source = response.uri;
+                dispatchLoaderAction({
+                  type: LOADING_START,
+                });
+                UpdateUser(uuid, source)
+                  .then(() => {
+                    setUserDetail({
+                      ...userDetail,
+                      profileImg: source,
+                    });
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                  })
+                  .catch(() => {
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                    toastService(err);
+                  });
+              }
+            });
           },
         },
       ],
@@ -179,7 +231,7 @@ const Dashboard = ({navigation}) => {
           <Profile
             img={profileImg}
             name={name}
-            onEditImgTap={() => selectPhotoTapped()}
+            onEditImgTap={() => editAvatar()}
           />
         }
         renderItem={({item}) => (
