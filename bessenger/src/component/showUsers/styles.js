@@ -9,7 +9,7 @@ export default StyleSheet.create({
     borderRadius: 30
   },
   cardItemStyle: {
-    backgroundColor: color.WHITE,
+    backgroundColor: color.BORDER_LIGHT_GREYCOLOR,
     borderRadius: 30
   },
 
