@@ -45,7 +45,7 @@ const Login = ({navigation}) => {
             });
             return;
           }
-          setAsyncStorage(keys.uuid, res.user.uid);
+          setAsyncStorage(keys.uid, res.user.uid);
           setUniqueValue(res.user.uid);
           dispatchLoaderAction({
             type: LOADING_STOP,

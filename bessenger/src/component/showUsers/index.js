@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { Card, CardItem, Left, Body, Thumbnail } from "native-base";
 import styles from "./styles";
 
-const ShowUsers = ({ name, img, onImgTap, onNameTap, email, uuid }) => {
+const ShowUsers = ({ name, img, onImgTap, onNameTap, email, uid }) => {
   return (
     <Card style={styles.cardStyle}>
       <CardItem style={styles.cardItemStyle}>
@@ -24,7 +24,7 @@ const ShowUsers = ({ name, img, onImgTap, onNameTap, email, uuid }) => {
               {email}
             </Text>
             <Text style={styles.profileEmail}>
-              {uuid}
+              {uid}
             </Text>
           </Body>
         </Left>

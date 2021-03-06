@@ -7,7 +7,7 @@ import {LogOutUser, UpdateUser} from '../../network';
 import {clearAsyncStorage} from '../../asyncStorage';
 import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
 import firebase from '../../firebase/config';
-import {uuid} from '../../utility/constants';
+import {uid} from '../../utility/constants';
 import {Profile, ShowUsers} from '../../component';
 import {Store} from '../../context/store';
 
@@ -46,9 +46,9 @@ const Dashboard = ({navigation}) => {
             email: '',
           };
           dataSnapShot.forEach((child) => {
-            if (uuid === child.val().uuid) {
+            if (uid === child.val().uid) {
               users.push({
-                uuid: child.val().uuid,
+                uid: child.val().uid,
                 name: child.val().name + ' (You)',
                 profileImg: child.val().profileImg,
                 email: child.val().email,
@@ -56,14 +56,14 @@ const Dashboard = ({navigation}) => {
             }
           });
           dataSnapShot.forEach((child) => {
-            if (uuid === child.val().uuid) {
-              currentUser.uuid = uuid;
+            if (uid === child.val().uid) {
+              currentUser.uid = uid;
               currentUser.name = child.val().name;
               currentUser.profileImg = child.val().profileImg;
               currentUser.email = child.val().email;
             } else {
               users.push({
-                uuid: child.val().uuid,
+                uid: child.val().uid,
                 name: child.val().name,
                 profileImg: child.val().profileImg,
                 email: child.val().email,
@@ -165,7 +165,7 @@ const Dashboard = ({navigation}) => {
                 dispatchLoaderAction({
                   type: LOADING_START,
                 });
-                UpdateUser(uuid, source)
+                UpdateUser(uid, source)
                   .then(() => {
                     setUserDetail({
                       ...userDetail,
@@ -199,7 +199,7 @@ const Dashboard = ({navigation}) => {
                 dispatchLoaderAction({
                   type: LOADING_START,
                 });
-                UpdateUser(uuid, source)
+                UpdateUser(uid, source)
                   .then(() => {
                     setUserDetail({
                       ...userDetail,

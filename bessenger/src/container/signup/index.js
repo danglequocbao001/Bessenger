@@ -62,7 +62,7 @@ const SignUp = ({navigation}) => {
           let profileImg = '';
           AddUser(name, email, uid, profileImg)
             .then(() => {
-              setAsyncStorage(keys.uuid, uid);
+              setAsyncStorage(keys.uid, uid);
               setUniqueValue(uid);
               dispatchLoaderAction({
                 type: LOADING_STOP,
