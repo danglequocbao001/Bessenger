@@ -16,9 +16,9 @@ export default ({img, name, onImgTap, onEditImgTap}) => (
             style={[
               globalStyle.sectionCentered,
               styles.img,
-              {backgroundColor: color.PRIMARY},
+              {backgroundColor: Math.floor(Math.random()*16777215).toString(16)},
             ]}>
-            <Text style={styles.name}>{name.charAt(0)}</Text>
+            <Text style={styles.name}>{name.charAt(0).toUpperCase()}</Text>
           </View>
         )}
       </TouchableOpacity>

@@ -45,16 +45,16 @@ const Dashboard = ({navigation}) => {
             profileImg: '',
             email: '',
           };
-          dataSnapShot.forEach((child) => {
-            if (uid === child.val().uid) {
-              users.push({
-                uid: child.val().uid,
-                name: child.val().name + ' (You)',
-                profileImg: child.val().profileImg,
-                email: child.val().email,
-              });
-            }
-          });
+          // dataSnapShot.forEach((child) => {
+          //   if (uid === child.val().uid) {
+          //     users.push({
+          //       uid: child.val().uid,
+          //       name: child.val().name + ' (You)',
+          //       profileImg: child.val().profileImg,
+          //       email: child.val().email,
+          //     });
+          //   }
+          // });
           dataSnapShot.forEach((child) => {
             if (uid === child.val().uid) {
               currentUser.uid = uid;
@@ -165,7 +165,7 @@ const Dashboard = ({navigation}) => {
                 dispatchLoaderAction({
                   type: LOADING_START,
                 });
-                UpdateUser(uid, source)
+                UpdateUser(name.replace(/\s/g, "").toLowerCase(), source)
                   .then(() => {
                     setUserDetail({
                       ...userDetail,
