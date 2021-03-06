@@ -58,7 +58,7 @@ const SignUp = ({navigation}) => {
             });
             return;
           }
-          let uid = firebase.auth().currentUser.uuid;
+          let uid = firebase.auth().currentUser.uid;
           let profileImg = '';
           AddUser(name, email, uid, profileImg)
             .then(() => {
