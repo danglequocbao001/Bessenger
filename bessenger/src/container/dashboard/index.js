@@ -170,6 +170,7 @@ const Dashboard = ({navigation}) => {
                     dispatchLoaderAction({
                       type: LOADING_STOP,
                     });
+                    toastService('Success, your avatar already updated!');
                   })
                   .catch(() => {
                     dispatchLoaderAction({
@@ -203,6 +204,7 @@ const Dashboard = ({navigation}) => {
                     dispatchLoaderAction({
                       type: LOADING_STOP,
                     });
+                    toastService('Success, your avatar already updated!');
                   })
                   .catch(() => {
                     dispatchLoaderAction({
