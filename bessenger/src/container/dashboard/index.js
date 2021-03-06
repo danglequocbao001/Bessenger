@@ -30,6 +30,7 @@ const Dashboard = ({navigation}) => {
     //   type: LOADING_START,
     // });
     try {
+      let isSubscribed = true
       firebase
         .database()
         .ref('users')
@@ -81,9 +82,7 @@ const Dashboard = ({navigation}) => {
       });
       alert(err);
     }
-    return function cleanup() {
-      mounted = false;
-    };
+    return () => (isSubscribed = false)
   }, []);
 
   useLayoutEffect(() => {
