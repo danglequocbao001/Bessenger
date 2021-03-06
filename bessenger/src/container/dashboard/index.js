@@ -30,7 +30,7 @@ const Dashboard = ({navigation}) => {
     //   type: LOADING_START,
     // });
     try {
-      let isSubscribed = true
+      let isSubscribed = true;
       firebase
         .database()
         .ref('users')
@@ -161,20 +161,20 @@ const Dashboard = ({navigation}) => {
               } else if (response.errorCode) {
                 toastService('Error, try again!');
               } else {
-                let source = response.uri;
                 dispatchLoaderAction({
                   type: LOADING_START,
                 });
-                UpdateUser(name.replace(/\s/g, "").toLowerCase(), source)
+                let source = response.uri;
+                UpdateUser(name.replace(/\s/g, '').toLowerCase(), source)
                   .then(() => {
                     setUserDetail({
                       ...userDetail,
                       profileImg: source,
                     });
+                    toastService('Success, your avatar already updated!');
                     dispatchLoaderAction({
                       type: LOADING_STOP,
                     });
-                    toastService('Success, your avatar already updated!');
                   })
                   .catch(() => {
                     dispatchLoaderAction({
@@ -195,20 +195,20 @@ const Dashboard = ({navigation}) => {
               } else if (response.errorCode) {
                 toastService('Error, try again!');
               } else {
-                let source = response.uri;
                 dispatchLoaderAction({
                   type: LOADING_START,
                 });
-                UpdateUser(uid, source)
+                let source = response.uri;
+                UpdateUser(name.replace(/\s/g, '').toLowerCase(), source)
                   .then(() => {
                     setUserDetail({
                       ...userDetail,
                       profileImg: source,
                     });
+                    toastService('Success, your avatar already updated!');
                     dispatchLoaderAction({
                       type: LOADING_STOP,
                     });
-                    toastService('Success, your avatar already updated!');
                   })
                   .catch(() => {
                     dispatchLoaderAction({
@@ -228,7 +228,11 @@ const Dashboard = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.BORDER_LIGHT_GREYCOLOR}]}>
+    <SafeAreaView
+      style={[
+        globalStyle.flex1,
+        {backgroundColor: color.BORDER_LIGHT_GREYCOLOR},
+      ]}>
       <FlatList
         alwaysBounceVertical={false}
         data={allUsers}
