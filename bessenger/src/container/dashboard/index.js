@@ -1,5 +1,12 @@
 import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
-import {Alert, ToastAndroid, SafeAreaView, FlatList} from 'react-native';
+import {
+  Alert,
+  ToastAndroid,
+  SafeAreaView,
+  FlatList,
+  ImagePickerIOS,
+} from 'react-native';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {color, globalStyle} from '../../utility';
 import {LogOutUser} from '../../network';
@@ -132,13 +139,49 @@ const Dashboard = ({navigation}) => {
     );
   };
 
+  const selectPhotoTapped = () => {
+    const option = {
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+
+    Alert.alert(
+      'Choose option',
+      'You want to pick image from library or camera?',
+      [
+        {
+          text: 'Library',
+          onPress: () => {
+            launchImageLibrary(option, (response) => {});
+          },
+        },
+        {
+          text: 'Camera',
+          onPress: () => {
+            launchCamera(option, (response) => {});
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
+
   return (
     <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.WHITE}]}>
       <FlatList
         alwaysBounceVertical={false}
         data={allUsers}
         keyExtractor={(_, index) => index.toString()}
-        ListHeaderComponent={<Profile img={profileImg} name={name} />}
+        ListHeaderComponent={
+          <Profile
+            img={profileImg}
+            name={name}
+            onEditImgTap={() => selectPhotoTapped()}
+          />
+        }
         renderItem={({item}) => (
           <ShowUsers
             name={item.name}
