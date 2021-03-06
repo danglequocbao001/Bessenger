@@ -109,6 +109,20 @@ const SignUp = ({navigation}) => {
               <Logo />
             </View>
           )}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: color.SECONDARY,
+                fontWeight: 'bold',
+                fontSize: 30,
+              }}>
+              Bessenger
+            </Text>
+          </View>
           <View style={[globalStyle.flex2, globalStyle.sectionCentered]}>
             <InputField
               placeholder="Enter name"
