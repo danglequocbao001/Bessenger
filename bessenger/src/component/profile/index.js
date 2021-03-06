@@ -35,4 +35,5 @@ export default ({img, name, onImgTap, onEditImgTap}) => (
     </View>
     <Text style={styles.welcome}>{name}</Text>
   </View>
+  
 );
