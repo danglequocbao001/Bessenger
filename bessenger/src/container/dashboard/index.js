@@ -227,6 +227,21 @@ const Dashboard = ({navigation}) => {
     );
   };
 
+  const imgTap = (profileImg, name) => {
+    if (!profileImg) {
+      navigation.navigate('ShowFullImg', {
+        name,
+        imgText: name.charAt(0),
+      });
+      
+    } else {
+      navigation.navigate('ShowFullImg', {
+        name,
+        img: profileImg,
+      });
+    }
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -242,6 +257,7 @@ const Dashboard = ({navigation}) => {
             img={profileImg}
             name={name}
             onEditImgTap={() => editAvatar()}
+            onImgTap={() => imgTap(profileImg, name)}
           />
         }
         renderItem={({item}) => (
@@ -249,6 +265,7 @@ const Dashboard = ({navigation}) => {
             name={item.name}
             img={item.profileImg}
             email={item.email}
+            onImgTap={() => imgTap(item.profileImg, item.name)}
           />
         )}
       />

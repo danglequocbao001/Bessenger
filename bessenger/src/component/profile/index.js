@@ -16,7 +16,7 @@ export default ({img, name, onImgTap, onEditImgTap}) => (
             style={[
               globalStyle.sectionCentered,
               styles.img,
-              {backgroundColor: Math.floor(Math.random()*16777215).toString(16)},
+              {backgroundColor: '#' + Math.floor(Math.random()*16777215).toString(16)},
             ]}>
             <Text style={styles.name}>{name.charAt(0).toUpperCase()}</Text>
           </View>
