@@ -251,6 +251,24 @@ const Dashboard = ({navigation}) => {
     }
   };
 
+  const nameTap = (profileImg, name, guestUserId) => {
+    if (!profileImg) {
+      navigation.navigate('Chat', {
+        name,
+        imgText: name.charAt(0),
+        guestUserId,
+        currentUserId: uid,
+      });
+    } else {
+      navigation.navigate('Chat', {
+        name,
+        img: profileImg,
+        guestUserId,
+        currentUserId: uid,
+      });
+    }
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -293,6 +311,7 @@ const Dashboard = ({navigation}) => {
             img={item.profileImg}
             email={item.email}
             onImgTap={() => imgTap(item.profileImg, item.name)}
+            onNameTap={() => nameTap(item.profileImg, item.name, item.id)}
           />
         )}
       />

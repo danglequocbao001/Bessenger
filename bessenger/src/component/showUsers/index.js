@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import {Card, CardItem, Left, Body, Thumbnail} from 'native-base';
 import styles from './styles';
-import { color } from "../../utility";
+import {color} from '../../utility';
 const ShowUsers = ({name, img, onImgTap, onNameTap, email, uid}) => {
   return (
     <Card style={styles.cardStyle}>
@@ -17,7 +17,8 @@ const ShowUsers = ({name, img, onImgTap, onNameTap, email, uid}) => {
               borderRadius: 30,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+              backgroundColor:
+                '#' + Math.floor(Math.random() * 16777215).toString(16),
             }}
             onPress={onImgTap}>
             {img ? (
@@ -31,7 +32,9 @@ const ShowUsers = ({name, img, onImgTap, onNameTap, email, uid}) => {
             <Text style={styles.profileName} onPress={onNameTap}>
               {name}
             </Text>
-            <Text style={styles.profileEmail}>{email}</Text>
+            <Text style={styles.profileEmail} onPress={onNameTap}>
+              {email}
+            </Text>
             <Text style={styles.profileEmail}>{uid}</Text>
           </Body>
         </Left>
