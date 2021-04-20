@@ -58,11 +58,12 @@ const SignUp = ({navigation}) => {
             });
             return;
           }
-          let uid = firebase.auth().currentUser.uuid;
+          let uid = firebase.auth().currentUser.uid;
           let profileImg = '';
-          AddUser(name, email, uid, profileImg)
+          let username = name.replace(/\s/g, "").toLowerCase();
+          AddUser(username, name, email, uid, profileImg)
             .then(() => {
-              setAsyncStorage(keys.uuid, uid);
+              setAsyncStorage(keys.uid, uid);
               setUniqueValue(uid);
               dispatchLoaderAction({
                 type: LOADING_STOP,
@@ -109,6 +110,20 @@ const SignUp = ({navigation}) => {
               <Logo />
             </View>
           )}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: color.SECONDARY,
+                fontWeight: 'bold',
+                fontSize: 30,
+              }}>
+              Bessenger
+            </Text>
+          </View>
           <View style={[globalStyle.flex2, globalStyle.sectionCentered]}>
             <InputField
               placeholder="Enter name"

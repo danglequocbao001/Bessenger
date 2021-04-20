@@ -17,13 +17,14 @@ const Splash = ({navigation}) => {
       dispatchLoaderAction({
         type: LOADING_START,
       });
-      getAsyncStorage(keys.uuid)
-        .then((uuid) => {
-          if (uuid) {
-            setUniqueValue(uuid);
+      getAsyncStorage(keys.uid)
+        .then((uid) => {
+          if (uid) {
+            setUniqueValue(uid);
             navigation.replace('Dashboard');
+          } else {
+            navigation.replace('Login');
           }
-          navigation.replace('Login');
         })
         .catch((err) => {
           // alert(err);

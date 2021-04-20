@@ -3,12 +3,14 @@ import { color } from "../../utility";
 
 export default StyleSheet.create({
   cardStyle: {
-    backgroundColor: color.SEMI_TRANSPARENT,
+    backgroundColor: color.TRANSPARENT,
     borderBottomWidth: 1,
     borderColor: color.SILVER,
+    borderRadius: 30,
   },
   cardItemStyle: {
-    backgroundColor: color.DARK_LIME_GREEN,
+    backgroundColor: color.SECONDARY,
+    borderRadius: 30
   },
 
   logoContainer: {

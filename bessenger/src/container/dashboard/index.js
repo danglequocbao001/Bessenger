@@ -1,18 +1,21 @@
 import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
-import {Alert, ToastAndroid, SafeAreaView, FlatList} from 'react-native';
+import {Alert, ToastAndroid, SafeAreaView, FlatList, View} from 'react-native';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {color, globalStyle} from '../../utility';
-import {LogOutUser} from '../../network';
+import {LogOutUser, UpdateUser} from '../../network';
 import {clearAsyncStorage} from '../../asyncStorage';
 import {LOADING_START, LOADING_STOP} from '../../context/actions/type';
 import firebase from '../../firebase/config';
-import {uuid} from '../../utility/constants';
-import {Profile, ShowUsers} from '../../component';
+import {smallDeviceHeight, uid} from '../../utility/constants';
+import {Profile, ShowUsers, StickyHeader} from '../../component';
 import {Store} from '../../context/store';
+import {deviceHeight} from '../../utility/styleHelper/appStyle';
 
 const Dashboard = ({navigation}) => {
   const globalState = useContext(Store);
   const {dispatchLoaderAction} = globalState;
+  const [getScrollPosition, setScrollPosition] = useState(0);
 
   const [userDetail, setUserDetail] = useState({
     id: '',
@@ -25,14 +28,18 @@ const Dashboard = ({navigation}) => {
   const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
-    dispatchLoaderAction({
-      type: LOADING_START,
-    });
+    // dispatchLoaderAction({
+    //   type: LOADING_START,
+    // });
     try {
+      let isSubscribed = true;
       firebase
         .database()
         .ref('users')
         .on('value', (dataSnapShot) => {
+          dispatchLoaderAction({
+            type: LOADING_START,
+          });
           let users = [];
           let currentUser = {
             id: '',
@@ -40,25 +47,25 @@ const Dashboard = ({navigation}) => {
             profileImg: '',
             email: '',
           };
+          // dataSnapShot.forEach((child) => {
+          //   if (uid === child.val().uid) {
+          //     users.push({
+          //       uid: child.val().uid,
+          //       name: child.val().name + ' (You)',
+          //       profileImg: child.val().profileImg,
+          //       email: child.val().email,
+          //     });
+          //   }
+          // });
           dataSnapShot.forEach((child) => {
-            if (uuid === child.val().uuid) {
-              users.push({
-                uuid: child.val().uuid,
-                name: child.val().name + ' (You)',
-                profileImg: child.val().profileImg,
-                email: child.val().email,
-              });
-            }
-          });
-          dataSnapShot.forEach((child) => {
-            if (uuid === child.val().uuid) {
-              currentUser.uuid = uuid;
+            if (uid === child.val().uid) {
+              currentUser.uid = uid;
               currentUser.name = child.val().name;
               currentUser.profileImg = child.val().profileImg;
               currentUser.email = child.val().email;
             } else {
               users.push({
-                uuid: child.val().uuid,
+                uid: child.val().uid,
                 name: child.val().name,
                 profileImg: child.val().profileImg,
                 email: child.val().email,
@@ -77,6 +84,9 @@ const Dashboard = ({navigation}) => {
       });
       alert(err);
     }
+    return function cleanup() {
+      firebase.database().goOffline();
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -122,25 +132,186 @@ const Dashboard = ({navigation}) => {
           .catch((err) => alert(err));
       })
       .catch((err) => alert(err));
+    toastService('Logged out');
+  };
+
+  const toastService = (messeage) => {
     ToastAndroid.showWithGravity(
-      'Logged out',
+      messeage,
       ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
+      ToastAndroid.BOTTOM,
     );
   };
 
+  const editAvatar = () => {
+    const option = {
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+
+    Alert.alert(
+      'Choose option',
+      'You want to pick image from library or camera?',
+      [
+        {
+          text: 'Library',
+          onPress: () => {
+            launchImageLibrary(option, (response) => {
+              if (response.didCancel) {
+                toastService('Canceled');
+              } else if (response.errorCode) {
+                toastService('Error, try again!');
+              } else {
+                dispatchLoaderAction({
+                  type: LOADING_START,
+                });
+                let source = response.uri;
+                UpdateUser(name.replace(/\s/g, '').toLowerCase(), source)
+                  .then(() => {
+                    setUserDetail({
+                      ...userDetail,
+                      profileImg: source,
+                    });
+                    toastService('Success, your avatar already updated!');
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                  })
+                  .catch(() => {
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                    toastService(err);
+                  });
+              }
+            });
+          },
+        },
+        {
+          text: 'Camera',
+          onPress: () => {
+            launchCamera(option, (response) => {
+              if (response.didCancel) {
+                toastService('Canceled');
+              } else if (response.errorCode) {
+                toastService('Error, try again!');
+              } else {
+                dispatchLoaderAction({
+                  type: LOADING_START,
+                });
+                let source = response.uri;
+                UpdateUser(name.replace(/\s/g, '').toLowerCase(), source)
+                  .then(() => {
+                    setUserDetail({
+                      ...userDetail,
+                      profileImg: source,
+                    });
+                    toastService('Success, your avatar already updated!');
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                  })
+                  .catch(() => {
+                    dispatchLoaderAction({
+                      type: LOADING_STOP,
+                    });
+                    toastService(err);
+                  });
+              }
+            });
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
+
+  const imgTap = (profileImg, name) => {
+    if (!profileImg) {
+      navigation.navigate('ShowFullImg', {
+        name,
+        imgText: name.charAt(0),
+      });
+    } else {
+      navigation.navigate('ShowFullImg', {
+        name,
+        img: profileImg,
+      });
+    }
+  };
+
+  const getOpacity = () => {
+    if (deviceHeight < smallDeviceHeight) {
+      return deviceHeight / 4;
+    } else {
+      return deviceHeight / 6;
+    }
+  };
+
+  const nameTap = (profileImg, name, guestUserId) => {
+    if (!profileImg) {
+      navigation.navigate('Chat', {
+        name,
+        imgText: name.charAt(0),
+        guestUserId,
+        currentUserId: uid,
+      });
+    } else {
+      navigation.navigate('Chat', {
+        name,
+        img: profileImg,
+        guestUserId,
+        currentUserId: uid,
+      });
+    }
+  };
+
   return (
-    <SafeAreaView style={[globalStyle.flex1, {backgroundColor: color.WHITE}]}>
+    <SafeAreaView
+      style={[
+        globalStyle.flex1,
+        {backgroundColor: color.BORDER_LIGHT_GREYCOLOR},
+      ]}>
+      {getScrollPosition > getOpacity() && (
+        <StickyHeader
+          name={name}
+          img={profileImg}
+          onImgTap={() => imgTap(profileImg, name)}
+        />
+      )}
       <FlatList
         alwaysBounceVertical={false}
         data={allUsers}
         keyExtractor={(_, index) => index.toString()}
-        ListHeaderComponent={<Profile img={profileImg} name={name} />}
+        onScroll={(event) =>
+          setScrollPosition(event.nativeEvent.contentOffset.y)
+        }
+        ListHeaderComponent={
+          <View
+            style={{
+              opacity:
+                getScrollPosition < getOpacity()
+                  ? (getOpacity() - getScrollPosition) / 100
+                  : 0,
+            }}>
+            <Profile
+              img={profileImg}
+              name={name}
+              onEditImgTap={() => editAvatar()}
+              onImgTap={() => imgTap(profileImg, name)}
+            />
+          </View>
+        }
         renderItem={({item}) => (
           <ShowUsers
             name={item.name}
             img={item.profileImg}
             email={item.email}
+            onImgTap={() => imgTap(item.profileImg, item.name)}
+            onNameTap={() => nameTap(item.profileImg, item.name, item.id)}
           />
         )}
       />

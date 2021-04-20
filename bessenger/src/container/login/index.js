@@ -45,7 +45,7 @@ const Login = ({navigation}) => {
             });
             return;
           }
-          setAsyncStorage(keys.uuid, res.user.uid);
+          setAsyncStorage(keys.uid, res.user.uid);
           setUniqueValue(res.user.uid);
           dispatchLoaderAction({
             type: LOADING_STOP,
@@ -71,13 +71,13 @@ const Login = ({navigation}) => {
   const handleFocus = () => {
     setTimeout(() => {
       toggleLogo(false);
-    },150);
+    }, 150);
   };
 
   const handleBlur = () => {
     setTimeout(() => {
       toggleLogo(true);
-    },150);
+    }, 150);
   };
 
   return (
@@ -92,6 +92,20 @@ const Login = ({navigation}) => {
               <Logo />
             </View>
           )}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: color.SECONDARY,
+                fontWeight: 'bold',
+                fontSize: 30,
+              }}>
+              Bessenger
+            </Text>
+          </View>
           <View style={[globalStyle.flex2, globalStyle.sectionCentered]}>
             <InputField
               placeholder="Enter email"
